@@ -2,7 +2,11 @@ import { Add } from "@mui/icons-material";
 import { Fragment, useState } from "react";
 import ResponsiveDialog from "../Dialog/ResponsiveDialog";
 
-const CardAddMesin = () => {
+interface CardAddMesinProps {
+    
+}
+
+const CardAddMesin:React.FC<CardAddMesinProps> = () => {
 
     const [open, setOpen] = useState(false);
 

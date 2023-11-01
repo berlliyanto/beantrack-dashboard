@@ -2,13 +2,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import React from 'react';
 
-const BasicSelect = () => {
-    const [age, setAge] = useState('');
+interface BasicSelectInterface {
+    summaryBy: string;
+    onChange: (sum: string) => void;
+}
+
+const BasicSelect: React.FC<BasicSelectInterface> = ({summaryBy, onChange}) => {
 
     const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
+        onChange(event.target.value as string);
     };
 
     return (
@@ -18,15 +22,15 @@ const BasicSelect = () => {
                 <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={age}
+                    value={summaryBy}
                     defaultValue='Harian'
                     label="Age"
                     onChange={handleChange} 
                     className='text-sm'
                 >
-                    <MenuItem value={'harian'}>Harian</MenuItem>
-                    <MenuItem value={'mingguan'}>Mingguan</MenuItem>
-                    <MenuItem value={'bulanan'}>Bulanan</MenuItem>
+                    <MenuItem value={'Daily'}>Harian</MenuItem>
+                    <MenuItem value={'Weekly'}>Mingguan</MenuItem>
+                    <MenuItem value={'Monthly'}>Bulanan</MenuItem>
                 </Select>
             </FormControl>
         </div>

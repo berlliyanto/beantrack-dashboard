@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import addIotService from '../../../services/iot/addIot';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ResponsiveDialogInterface{
     open: boolean;
@@ -16,14 +17,14 @@ interface ResponsiveDialogInterface{
 }
 
 const  ResponsiveDialog: React.FC<ResponsiveDialogInterface> = ({open, handleClose, setOpen, title}) => {
-
+    const queryClient = useQueryClient();
     const token = useSelector((state: any) => state.token);
     const [name, setName] = useState<string>('');
     const [code, setCode] = useState<string>('');
 
     const { mutate } = addIotService(
         (success) => {
-            console.log(success)
+            queryClient.invalidateQueries({queryKey: ['getAllIot']})
             setOpen(false);
         },
         (error) => {
