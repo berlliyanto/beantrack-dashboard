@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import { useGetURLParams } from "../../hooks/useGetURLParams";
 import NoMesinView from "../Fragments/Dashboard/NoMesinView";
 import { getDetailIotService } from "../../services/iot/getDetailIot";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Alert, Backdrop, CircularProgress } from "@mui/material";
 
 type ListMesinType = {
     code: string;
@@ -122,7 +122,9 @@ const DashboardLayout = () => {
     const renderGauge = (): React.ReactElement => {
         return (
             iotRecaps.length == 0
-                ? <h1>no Data</h1>
+                ? <Alert severity="info" sx={{width: '100%'}}>
+                    <h1 className="text-[16px] text-slate-800">Belum ada ringkasan data untuk tanggal <span className="font-semibold">{filterDate}</span></h1>
+                </Alert>
                 :
                 <Fragment>
                     <GaugeDashboard title="Suhu Dryer" subtitle="Dryer" color="#FF718B" value={newestSensorData.average_temperature} simbol="°C" />
@@ -139,7 +141,7 @@ const DashboardLayout = () => {
                     {
                         renderMenuMesin()
                     }
-                    <CardAddMesin  />
+                    <CardAddMesin />
                 </div>
             </section>
             {
@@ -150,7 +152,9 @@ const DashboardLayout = () => {
                         <section className="px-4 pb-4">
                             <div className="pb-3 flex justify-between items-center">
                                 <h1 className="font-bold text-lg text-slate-800">Ringkasan Data</h1>
-                                <input type="date" name="date" id="date" className="text-slate-800 outline-none focus:ring-2 ring-primary rounded-[4px] p-1 text-sm border border-[#DADADA]" onChange={(event) => setFilterDate(event.target.value)} />
+                                <input type="date" name="date" id="date" className="text-slate-800 outline-none focus:ring-2 ring-primary rounded-[4px] p-1 text-sm border border-[#DADADA]"
+                                    onChange={(event) => setFilterDate(event.target.value)}
+                                    defaultValue={new Date().toISOString().slice(0, 10)} />
                             </div>
                             <div className="flex flex-wrap bg-white gap-3">
                                 {renderGauge()}
