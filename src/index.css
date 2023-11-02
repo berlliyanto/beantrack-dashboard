@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .hero-auth {
   background-image: url('./assets/kopi.jpg');
 }
-
 
 @font-face {
   font-family: "Inter";

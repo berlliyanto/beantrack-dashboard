@@ -1,10 +1,12 @@
 import Chart from "react-apexcharts";
 
-interface LineChartInterface {
+interface LineChartProps {
     title: string;
+    categories: string[];
+    data: number[];
 }
 
-const LineChart: React.FC<LineChartInterface> = ({title}) => {
+const LineChart: React.FC<LineChartProps> = ({title}) => {
     const options: ApexCharts.ApexOptions = {
         chart: {
             id: "basic-bar",
@@ -15,7 +17,8 @@ const LineChart: React.FC<LineChartInterface> = ({title}) => {
         },
         colors: title=="Grafik Suhu" ? ["#FF718B"] : ["#3A7358"],
         noData: {
-            text: "Loading..."
+            text: "Loading...",
+            style: {'fontSize': '2rem'}
         }
 
     }
@@ -23,7 +26,7 @@ const LineChart: React.FC<LineChartInterface> = ({title}) => {
     const series: ApexAxisChartSeries = [
         {
             data: [30, 40, 45, 50, 49, 60, 70, 80, 40, 50, 60, 70],
-            name: title,
+            name: title.split(' ')[1],
         },
     ]
 

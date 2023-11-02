@@ -37,18 +37,19 @@ const DashboardLayout = () => {
     const [newestSensorData, setNewestSensorData] = useState({
         average_temperature: 0,
         average_humidity: 0
-    })
+    });
+
 
     const token = useSelector((state: any) => state.token);
     const { search } = useLocation();
     const active = useGetURLParams(search, 'active');
 
     const { data: iotAll } = getAllIotService(token, 1, 10);
-    const { data: detailIot, 
-        isLoading: loadingDetailIot, 
-        refetch: refetchDetailIot, 
-        isRefetching: refetchingDetailIot, 
-        error: errorDetailIot, 
+    const { data: detailIot,
+        isLoading: loadingDetailIot,
+        refetch: refetchDetailIot,
+        isRefetching: refetchingDetailIot,
+        error: errorDetailIot,
         isError: isErrorDetailIot } = getDetailIotService(token, active, summaryBy, filterDate);
 
     //--------------Handler Area---------------------//
@@ -56,12 +57,12 @@ const DashboardLayout = () => {
     const handleChangeSummary = (sumBy: string) => {
         if (!sumBy) return;
         setSummaryBy(sumBy);
-    }
+    };
 
     //--------------useEffect Area---------------------//
 
     useEffect(() => {
-        if(isErrorDetailIot) toast.error(errorDetailIot?.message as string);
+        if (isErrorDetailIot) toast.error(errorDetailIot?.message as string);
     }, [errorDetailIot])
 
     useEffect(() => {
@@ -90,6 +91,7 @@ const DashboardLayout = () => {
         return <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={refetchingDetailIot || loadingDetailIot}
+
         >
             <CircularProgress color="inherit" />
         </Backdrop>
@@ -112,7 +114,7 @@ const DashboardLayout = () => {
     const renderGauge = (): React.ReactElement => {
         return (
             iotRecaps.length == 0
-                ? <Alert severity="info" sx={{width: '100%'}}>
+                ? <Alert severity="info" sx={{ width: '100%' }}>
                     <h1 className="text-[16px] text-slate-800">Belum ada ringkasan data untuk tanggal <span className="font-semibold">{filterDate}</span></h1>
                 </Alert>
                 :
@@ -128,9 +130,7 @@ const DashboardLayout = () => {
             <section className="p-4 flex flex-col gap-3">
                 <h1 className="font-bold text-lg text-slate-800">Mesin</h1>
                 <div className="overflow-x-auto flex gap-2 flex-no-wrap pb-2">
-                    {
-                        renderMenuMesin()
-                    }
+                    {renderMenuMesin()}
                     <CardAddMesin />
                 </div>
             </section>

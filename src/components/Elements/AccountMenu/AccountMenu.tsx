@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { Help } from '@mui/icons-material';
 
 interface AccountMenuInterface{
     handleLogout: () => void;
@@ -80,15 +81,18 @@ const AccountMenu: React.FC<AccountMenuInterface> = ({handleLogout}) => {
                 <MenuItem  onClick={() => navigate("/profile?view=profile")}>
                     <Avatar /> Profile
                 </MenuItem>
-                <MenuItem >
-                    <Avatar /> My account
-                </MenuItem>
                 <Divider />
                 <MenuItem >
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
                     Settings
+                </MenuItem>
+                <MenuItem >
+                    <ListItemIcon>
+                        <Help fontSize="small" />
+                    </ListItemIcon>
+                    Help
                 </MenuItem>
                 <MenuItem onClick={handleLogout} >
                     <ListItemIcon>
