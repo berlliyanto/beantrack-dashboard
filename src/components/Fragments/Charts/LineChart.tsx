@@ -2,8 +2,6 @@ import Chart from "react-apexcharts";
 
 interface LineChartProps {
     title: string;
-    categories: string[];
-    data: number[];
 }
 
 const LineChart: React.FC<LineChartProps> = ({title}) => {
