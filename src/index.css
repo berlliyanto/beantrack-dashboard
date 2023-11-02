@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.hero-auth {
+  background-image: url('images/bg-auth.png');
+}
+
 @font-face {
   font-family: "Inter";
   src: url("fonts/Inter/Inter.ttf") format("truetype");

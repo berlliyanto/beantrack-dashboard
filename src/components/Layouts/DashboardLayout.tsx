@@ -28,28 +28,9 @@ type IotRecapsType = {
     updated_at: string;
 }
 
-const listMesin: ListMesinType[] = [
-    {
-        code: 'iot-a',
-        name: 'IOT A',
-        id: 1,
-    },
-    {
-        code: 'iot-b',
-        name: 'IOT B',
-        id: 2
-    },
-    {
-        code: 'IOT-C',
-        name: 'IOT C',
-        id: 3
-    },
-]
-
 const DashboardLayout = () => {
-    const [listDataMesin, setListDataMesin] = useState<ListMesinType[]>([]);
     const [summaryBy, setSummaryBy] = useState<string>('Daily');
-    const [filterDate, setFilterDate] = useState<string>('');
+    const [filterDate, setFilterDate] = useState<string>(new Date().toISOString().slice(0, 10));
     const [stateIot, setStateIot] = useState<boolean>(false);
     const [iotRecaps, setIotRecaps] = useState<IotRecapsType[]>([]);
     const [newestSensorData, setNewestSensorData] = useState({
@@ -61,7 +42,7 @@ const DashboardLayout = () => {
     const { search } = useLocation();
     const active = useGetURLParams(search, 'active');
 
-    const { data: iotAll, isLoading: loadingIotAll, refetch: refetchAllIot, isRefetching: refetchingAllIot } = getAllIotService(token, 1, 10);
+    const { data: iotAll } = getAllIotService(token, 1, 10);
     const { data: detailIot, isLoading: loadingDetailIot, refetch: refetchDetailIot, isRefetching: refetchingDetailIot } = getDetailIotService(token, active, summaryBy, filterDate);
 
     //--------------Handler Area---------------------//

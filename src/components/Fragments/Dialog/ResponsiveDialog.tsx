@@ -23,7 +23,7 @@ const  ResponsiveDialog: React.FC<ResponsiveDialogInterface> = ({open, handleClo
     const [code, setCode] = useState<string>('');
 
     const { mutate } = addIotService(
-        (success) => {
+        () => {
             queryClient.invalidateQueries({queryKey: ['getAllIot']})
             setOpen(false);
         },
