@@ -12,6 +12,7 @@ import { useGetURLParams } from "../../hooks/useGetURLParams";
 import NoMesinView from "../Fragments/Dashboard/NoMesinView";
 import { getDetailIotService } from "../../services/iot/getDetailIot";
 import { Alert, Backdrop, CircularProgress } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 type ListMesinType = {
     code: string;
@@ -43,17 +44,25 @@ const DashboardLayout = () => {
     const active = useGetURLParams(search, 'active');
 
     const { data: iotAll } = getAllIotService(token, 1, 10);
-    const { data: detailIot, isLoading: loadingDetailIot, refetch: refetchDetailIot, isRefetching: refetchingDetailIot } = getDetailIotService(token, active, summaryBy, filterDate);
+    const { data: detailIot, 
+        isLoading: loadingDetailIot, 
+        refetch: refetchDetailIot, 
+        isRefetching: refetchingDetailIot, 
+        error: errorDetailIot, 
+        isError: isErrorDetailIot } = getDetailIotService(token, active, summaryBy, filterDate);
 
     //--------------Handler Area---------------------//
 
     const handleChangeSummary = (sumBy: string) => {
         if (!sumBy) return;
         setSummaryBy(sumBy);
-        refetchDetailIot();
     }
 
     //--------------useEffect Area---------------------//
+
+    useEffect(() => {
+        if(isErrorDetailIot) toast.error(errorDetailIot?.message as string);
+    }, [errorDetailIot])
 
     useEffect(() => {
         if (active) {
@@ -74,7 +83,7 @@ const DashboardLayout = () => {
 
     useEffect(() => {
         refetchDetailIot();
-    }, [filterDate])
+    }, [filterDate, summaryBy])
 
     //--------------Render Area---------------------//
     const renderLoading = (): React.ReactElement => {
@@ -95,7 +104,7 @@ const DashboardLayout = () => {
             />
         )) : (
             <div className="flex flex-col justify-center mr-3 bg-white border border-slate-300 rounded-lg px-3">
-                <p className="text-slate-500">Belum mesin terbaru</p>
+                <p className="text-slate-500">Belum ada mesin terbaru</p>
             </div>
         )
     }
@@ -157,6 +166,7 @@ const DashboardLayout = () => {
                     </Fragment>
             }
             {renderLoading()}
+            <Toaster />
         </article>
     )
 }

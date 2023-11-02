@@ -39,7 +39,7 @@ const RegisterPage = () => {
                     <div className="hidden md:block md:pb-8 2xl:absolute 2xl:top-6 xl:hidden">
                         <img src="images/3_BEANTRACK.svg" alt="" />
                     </div>
-                    <AuthLayout title="Register Now" subtitle="Create your account">
+                    <AuthLayout title="Register Now" subtitle="Create your account" routeBack="/login">
                         <section className="md:mb-4">
                             <FormRegister handleRegister={handleRegister} isPending={isPending} />
                         </section>

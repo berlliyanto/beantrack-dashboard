@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { saveTokenAfterLoginSuccess } from "../redux/slice/authSlice";
 import loginService from "../services/auth/login";
 import toast, { Toaster } from 'react-hot-toast';
+import { motion } from "framer-motion";
 
 
 const LoginPage = () => {
@@ -19,7 +20,6 @@ const LoginPage = () => {
     const { mutate, isPending } = loginService(
         (success) => {
             const { data } = success;
-            console.log(success)
             if (data.code == 200) {
                 dispatch(saveTokenAfterLoginSuccess(data.data.token));
                 toast.success('Login Berhasil', {
@@ -46,10 +46,11 @@ const LoginPage = () => {
             <NavBar />
             <main className="block pb-10 md:pb-0 md:py-6 md:pl-16 md:pr-6 md:flex md:justify-between md:gap-10 lg:pl-24 2xl:items-center">
                 <article className="md:w-[400px] lg:w-[600px]">
-                    <div className="hidden md:block md:pb-8 2xl:absolute 2xl:top-6">
+                    <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:1}}
+                    className="hidden md:block md:pb-8 2xl:absolute 2xl:top-6">
                         <img src="images/3_BEANTRACK.svg" alt="" />
-                    </div>
-                    <AuthLayout title="Welcome to BeanTrack" subtitle="Login to your account">
+                    </motion.div>
+                    <AuthLayout title="Welcome to BeanTrack" subtitle="Login to your account" routeBack="/">
                         <section id="socmed" className="flex flex-col gap-3 md:flex-row md:justify-center md:gap-5">
                             <ButtonSocmed text="Login with Apple" icon="icons/apple.png" className="md:hidden" />
                             <ButtonSocmed text="Login with Google" icon="icons/google.png" className="md:hidden" />

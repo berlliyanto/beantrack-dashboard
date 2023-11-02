@@ -5,7 +5,7 @@ export const getDetailIotService = (token: string, iotCode: string, sumBy: strin
     return useQuery({
         queryKey: ['getDetailIot'],
         queryFn: async () => {
-            if(!iotCode) return;
+            if(!iotCode) return null;
             return await axiosInstance.get(`/iot/${iotCode}?summary_by=${sumBy}&date=${date}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

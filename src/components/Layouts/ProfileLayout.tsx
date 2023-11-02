@@ -3,6 +3,7 @@ import ProfileSetting from "../Fragments/Profile/ProfileSetting";
 import { useGetURLParams } from "../../hooks/useGetURLParams";
 import { Fragment, ReactNode, useEffect, useState } from "react";
 import ChangePassword from "../Fragments/Profile/ChangePassword";
+import { motion } from "framer-motion";
 
 type ListMenuProfileType = {
     name: string;
@@ -39,9 +40,10 @@ const ProfileLayout = () => {
     }
 
     return (
-        <article className="p-4 md:pt-20 md:pl-60">
+        <motion.article initial={{opacity: 0}} animate={{opacity:1}} transition={{duration: 1}}
+        className="p-4 md:pt-20 md:pl-60">
             {renderMenuProfile()}
-        </article>
+        </motion.article>
     )
 }
 

@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { Search } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useGetURLParams } from '../../../hooks/useGetURLParams';
+import { motion } from "framer-motion";
 
 type ListMenuType = {
     name: string
@@ -48,7 +49,8 @@ const FixedDrawer: React.FC<FixedDrawerInterface> = ({ listMenu }) => {
     );
 
     return (
-        <aside className="hidden h-screen w-60 border-r border-[#DADADA] bg-white fixed left-0 top-0 z-10 pt-20 md:flex md:flex-col md:justify-between ani">
+        <motion.aside initial={{opacity: 0, translateX: -50}} animate={{opacity:1, translateX: 0}} transition={{duration: 1}}
+        className="hidden h-screen w-60 border-r border-[#DADADA] bg-white fixed left-0 top-0 z-10 pt-20 md:flex md:flex-col md:justify-between ani">
             <section>
                 <div className='relative px-4 box-border mt-4'>
                     <input type='text' className='border w-52 border-[#DADADA] rounded-md py-2 pl-8 text-slate-800 placeholder:text-slate-800 outline-none focus:ring-1 ring-emerald-400' placeholder='Pencarian' />
@@ -59,7 +61,7 @@ const FixedDrawer: React.FC<FixedDrawerInterface> = ({ listMenu }) => {
             <section>
 
             </section>
-        </aside>
+        </motion.aside>
     )
 }
 

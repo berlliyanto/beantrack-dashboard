@@ -33,7 +33,7 @@ const FormRegister: React.FC<FormRegisterInterface> = ({ handleRegister, isPendi
 
 
         if (name === "" || phone === "" || email === "" || password === "" || confirmPassword === "") {
-            toast.error("Please fill all fields");
+            toast.error("Tolong isi semua bagian");
             return;
         }
 
