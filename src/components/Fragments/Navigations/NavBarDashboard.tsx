@@ -8,6 +8,7 @@ import { clearTokenAfterLogout } from "../../../redux/slice/authSlice";
 import { logoutService } from "../../../services/auth/logout";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toggleDarkMode } from "../../../redux/slice/darkModeSlice";
 
 const NavBarDashboard = () => {
     const token = useSelector((state: any) => state.token);
@@ -16,6 +17,7 @@ const NavBarDashboard = () => {
     const [open, setOpen] = useState<boolean>(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const darkMode = useSelector((state:any) => state.darkMode);
 
     const { data, isFetching } = profileService(token, "getProfileNav")
     const { mutate, isPending } = logoutService(
@@ -37,17 +39,28 @@ const NavBarDashboard = () => {
         if(isPending) setOpen(true)
     }, [data, isPending])
 
+    useEffect(() => {
+        if(darkMode){
+            document.documentElement.classList.add('dark');
+        }else{
+            document.documentElement.classList.remove('dark');
+        }
+    },[darkMode])
+
     const handleLogout = () => mutate({ token })
+    const changeTheme = () => {
+        dispatch(toggleDarkMode());
+    }
 
     return (
         <motion.header initial={{opacity: 0, translateY: -50}} animate={{opacity:1, translateY: 0}} transition={{duration: 1}}
-        className="md:fixed flex justify-between items-center h-[80px] w-full py-[24px] px-[16px] bg-white border-b border-[#DADADA] z-50">
+        className="md:fixed flex justify-between items-center h-[80px] w-full py-[24px] px-[16px] bg-white border-b border-[#DADADA] z-50 duration-300 ">
             <a href="/dashboard?view=dashboard" className="">
                 <img src="images/3_BEANTRACK.svg" alt="" />
             </a>
             <div className="flex gap-2 items-center">
-                <Toggle icon="icons/moon.svg" />
-                <Toggle icon="icons/bell.svg" />
+                <Toggle icon={`icons/${darkMode ? 'sun' : 'moon'}.svg`} onClick={changeTheme} />
+                <Toggle icon="icons/bell.svg" onClick={()=>{}}/>
                 <div className="block md:hidden">
                     <AccountMenu handleLogout={handleLogout} />
                 </div>

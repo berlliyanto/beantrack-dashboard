@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useEffect, useState } from "react";
+import React, { Fragment, ReactNode, useEffect, useState } from "react";
 import CardAddMesin from "../Fragments/Cards/CardAddMesin";
 import CardMesin from "../Fragments/Cards/CardMesin";
 import GaugeDashboard from "../Fragments/Dashboard/GaugeDashboard";
@@ -20,21 +20,27 @@ type ListMesinType = {
     id: number;
 }
 
+type NewestSensorDataType = {
+    average_temperature: number;
+    average_humidity: number;
+}
+
 type IotRecapsType = {
     id: number | string;
     temperature: number;
-    humidty: number;
+    humidity: number;
     iot_id: number;
     created_at: string;
     updated_at: string;
 }
 
 const DashboardLayout = () => {
+    const [categoryIndex, setCategoryIndex] = useState<number>(0);
     const [summaryBy, setSummaryBy] = useState<string>('Daily');
     const [filterDate, setFilterDate] = useState<string>(new Date().toISOString().slice(0, 10));
     const [stateIot, setStateIot] = useState<boolean>(false);
     const [iotRecaps, setIotRecaps] = useState<IotRecapsType[]>([]);
-    const [newestSensorData, setNewestSensorData] = useState({
+    const [newestSensorData, setNewestSensorData] = useState<NewestSensorDataType>({
         average_temperature: 0,
         average_humidity: 0
     });
@@ -83,6 +89,11 @@ const DashboardLayout = () => {
     }, [detailIot])
 
     useEffect(() => {
+        if(summaryBy=="Daily"){
+            setCategoryIndex(1)
+        }else{
+            setCategoryIndex(0);
+        }
         refetchDetailIot();
     }, [filterDate, summaryBy])
 
@@ -91,7 +102,6 @@ const DashboardLayout = () => {
         return <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={refetchingDetailIot || loadingDetailIot}
-
         >
             <CircularProgress color="inherit" />
         </Backdrop>
@@ -125,6 +135,25 @@ const DashboardLayout = () => {
         );
     }
 
+    const renderGraphic = (): React.ReactElement => {
+        let saveDataSuhuGraphic: number[] = [];
+        let saveCategoryGraphic: string[] = []; 
+        let saveDataKelembapanGraphic: number[] = [];
+        if(iotRecaps.length > 0){
+            iotRecaps.reverse().slice(0, 10).map((item: IotRecapsType) => {
+                saveDataSuhuGraphic = [...saveDataSuhuGraphic, item.temperature];
+                saveCategoryGraphic = [...saveCategoryGraphic, item.updated_at.split(' ')[categoryIndex]];
+                saveDataKelembapanGraphic = [...saveDataKelembapanGraphic, item.humidity];
+            })
+        }
+        return (
+            <Fragment>
+                <GraphDashboard title="Grafik Suhu" simbol="°C" data={saveDataSuhuGraphic} category={saveCategoryGraphic} />
+                <GraphDashboard title="Grafik Kelembapan" simbol="%" data={saveDataKelembapanGraphic} category={saveCategoryGraphic} />
+            </Fragment>
+        )
+    }
+
     return (
         <article className="md:pt-20 md:pl-60">
             <section className="p-4 flex flex-col gap-3">
@@ -156,8 +185,7 @@ const DashboardLayout = () => {
                                 <BasicSelect onChange={handleChangeSummary} summaryBy={summaryBy} />
                             </div>
                             <div className="flex flex-col gap-3 xl:flex-row">
-                                <GraphDashboard title="Grafik Suhu" />
-                                <GraphDashboard title="Grafik Kelembapan" />
+                                {renderGraphic()}
                             </div>
                         </section>
                         <section className="px-4 pb-4">

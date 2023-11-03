@@ -9,17 +9,17 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: localStorage.getItem('token') || "",
     reducers: {
-        saveTokenAfterLoginSuccess: (state: string, action: ActionType) => {
+        saveTokenAfterLoginSuccess: (state: string, action: ActionType): string => {
             localStorage.setItem('token', action.payload);
             state = action.payload;
-            const newState = state;
+            const newState: string = state;
             return newState;
         },
 
-        clearTokenAfterLogout: (state: string) => {
+        clearTokenAfterLogout: (state: string): string => {
             localStorage.removeItem('token');
             state = "";
-            const newState = state;
+            const newState: string = state;
             return newState;
         }
     }
