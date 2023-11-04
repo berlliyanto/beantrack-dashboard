@@ -22,7 +22,7 @@ const GaugeDashboard: React.FC<GaugeDashboardProps> = ({title, subtitle, color, 
             <div className="mx-auto">
             <RadialGauge color={color} value={value} simbol={simbol} />
             </div>
-            <div className={`bg-emerald-200/50 w-fit py-1 px-2 rounded-sm mx-auto text-sm text-primary`}>
+            <div className={` w-fit py-1 px-2 rounded-sm mx-auto text-sm text-primary`}>
                 
             </div>
             <p className="text-center text-sm text-slate-500 pt-2"></p>

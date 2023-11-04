@@ -4,7 +4,6 @@ import CardMesin from "../Fragments/Cards/CardMesin";
 import GaugeDashboard from "../Fragments/Dashboard/GaugeDashboard";
 import GraphDashboard from "../Fragments/Dashboard/Graph";
 import BasicSelect from "../Elements/Select/BasicSelect";
-import TableDashboard from "../Fragments/Dashboard/TableDashboard";
 import { getAllIotService } from "../../services/iot/getAllIot";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
