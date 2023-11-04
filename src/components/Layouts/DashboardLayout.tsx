@@ -188,9 +188,9 @@ const DashboardLayout = () => {
                                 {renderGraphic()}
                             </div>
                         </section>
-                        <section className="px-4 pb-4">
+                        {/* <section className="px-4 pb-4">
                             <TableDashboard />
-                        </section>
+                        </section> */}
                     </Fragment>
             }
             {renderLoading()}
