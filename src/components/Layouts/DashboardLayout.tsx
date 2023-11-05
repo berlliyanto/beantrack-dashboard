@@ -25,16 +25,17 @@ type NewestSensorDataType = {
 }
 
 type IotRecapsType = {
-    id: number | string;
     temperature: number;
     humidity: number;
-    iot_id: number;
-    created_at: string;
-    updated_at: string;
 }
 
+const categoryDaily: string[] = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
+const categoryWeekly: string[] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+const categoryMonthly: string[] = ['Minggu-1', 'Minggu-2', 'Minggu-3', 'Minggu-4', 'Minggu-5'];
+
+
 const DashboardLayout = () => {
-    const [categoryIndex, setCategoryIndex] = useState<number>(0);
+    const [category, setCategory] = useState<string[]>(categoryDaily);
     const [summaryBy, setSummaryBy] = useState<string>('Daily');
     const [filterDate, setFilterDate] = useState<string>(new Date().toISOString().slice(0, 10));
     const [stateIot, setStateIot] = useState<boolean>(false);
@@ -81,17 +82,19 @@ const DashboardLayout = () => {
 
     useEffect(() => {
         if (detailIot) {
-            setIotRecaps(detailIot.data.data.iotRecaps);
+            setIotRecaps(detailIot.data.data.results);
             const { average_temperature, average_humidity } = detailIot.data.data
             setNewestSensorData((state) => ({ ...state, average_temperature, average_humidity }))
         }
     }, [detailIot])
 
     useEffect(() => {
-        if(summaryBy=="Daily"){
-            setCategoryIndex(1)
+        if(summaryBy=="Monthly"){
+            setCategory(categoryMonthly);
+        }else if(summaryBy=="Weekly"){
+            setCategory(categoryWeekly);
         }else{
-            setCategoryIndex(0);
+            setCategory(categoryDaily);
         }
         refetchDetailIot();
     }, [filterDate, summaryBy])
@@ -139,16 +142,16 @@ const DashboardLayout = () => {
         let saveCategoryGraphic: string[] = []; 
         let saveDataKelembapanGraphic: number[] = [];
         if(iotRecaps.length > 0){
-            iotRecaps.reverse().slice(0, 10).map((item: IotRecapsType) => {
+            iotRecaps.map((item: IotRecapsType) => {
                 saveDataSuhuGraphic = [...saveDataSuhuGraphic, item.temperature];
-                saveCategoryGraphic = [...saveCategoryGraphic, item.updated_at.split(' ')[categoryIndex]];
+                saveCategoryGraphic = [...saveCategoryGraphic, `$` ];
                 saveDataKelembapanGraphic = [...saveDataKelembapanGraphic, item.humidity];
             })
         }
         return (
             <Fragment>
-                <GraphDashboard title="Grafik Suhu" simbol="°C" data={saveDataSuhuGraphic} category={saveCategoryGraphic} />
-                <GraphDashboard title="Grafik Kelembapan" simbol="%" data={saveDataKelembapanGraphic} category={saveCategoryGraphic} />
+                <GraphDashboard title="Grafik Suhu" simbol="°C" data={saveDataSuhuGraphic} category={category} />
+                <GraphDashboard title="Grafik Kelembapan" simbol="%" data={saveDataKelembapanGraphic} category={category} />
             </Fragment>
         )
     }

@@ -27,7 +27,6 @@ const LineChart: React.FC<LineChartProps> = ({title, data, category}) => {
         {
             data: data,
             name: title.split(' ')[1],
-
         },
     ]
 
