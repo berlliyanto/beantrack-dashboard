@@ -89,11 +89,11 @@ const DashboardLayout = () => {
     }, [detailIot])
 
     useEffect(() => {
-        if(summaryBy=="Monthly"){
+        if (summaryBy == "Monthly") {
             setCategory(categoryMonthly);
-        }else if(summaryBy=="Weekly"){
+        } else if (summaryBy == "Weekly") {
             setCategory(categoryWeekly);
-        }else{
+        } else {
             setCategory(categoryDaily);
         }
         refetchDetailIot();
@@ -123,28 +123,37 @@ const DashboardLayout = () => {
         )
     }
 
+    const renderAlert = (): ReactNode => {
+        let result = 0;
+        iotRecaps.forEach((item: IotRecapsType) => {
+            result += item.temperature + item.humidity;
+        });
+        return result == 0 ? 
+        (
+            <Alert severity="info" sx={{ width: '100%' }}>
+                <h1 className="text-[16px] text-slate-800">Belum ada ringkasan data untuk tanggal <span className="font-semibold">{filterDate}</span></h1>
+            </Alert>
+        ) : (<div></div>)
+
+    }
+
     const renderGauge = (): React.ReactElement => {
         return (
-            iotRecaps.length == 0
-                ? <Alert severity="info" sx={{ width: '100%' }}>
-                    <h1 className="text-[16px] text-slate-800">Belum ada ringkasan data untuk tanggal <span className="font-semibold">{filterDate}</span></h1>
-                </Alert>
-                :
-                <Fragment>
-                    <GaugeDashboard title="Suhu Dryer" subtitle="Dryer" color="#FF718B" value={newestSensorData.average_temperature} simbol="°C" />
-                    <GaugeDashboard title="Kelembapan Dryer" subtitle="Dryer" color="#3A7358" value={newestSensorData.average_humidity} simbol="%" />
-                </Fragment>
+            <Fragment>
+                <GaugeDashboard title="Suhu Dryer" subtitle="Dryer" color="#FF718B" value={newestSensorData.average_temperature} simbol="°C" />
+                <GaugeDashboard title="Kelembapan Dryer" subtitle="Dryer" color="#3A7358" value={newestSensorData.average_humidity} simbol="%" />
+            </Fragment>
         );
     }
 
     const renderGraphic = (): React.ReactElement => {
         let saveDataSuhuGraphic: number[] = [];
-        let saveCategoryGraphic: string[] = []; 
+        let saveCategoryGraphic: string[] = [];
         let saveDataKelembapanGraphic: number[] = [];
-        if(iotRecaps.length > 0){
+        if (iotRecaps.length > 0) {
             iotRecaps.map((item: IotRecapsType) => {
                 saveDataSuhuGraphic = [...saveDataSuhuGraphic, item.temperature];
-                saveCategoryGraphic = [...saveCategoryGraphic, `$` ];
+                saveCategoryGraphic = [...saveCategoryGraphic, `$`];
                 saveDataKelembapanGraphic = [...saveDataKelembapanGraphic, item.humidity];
             })
         }
@@ -177,6 +186,9 @@ const DashboardLayout = () => {
                                     onChange={(event) => setFilterDate(event.target.value)}
                                     defaultValue={new Date().toISOString().slice(0, 10)} />
                             </div>
+                            <div className="mb-3">
+                                {renderAlert()}
+                            </div>
                             <div className="flex flex-wrap bg-white gap-3">
                                 {renderGauge()}
                             </div>
@@ -190,9 +202,6 @@ const DashboardLayout = () => {
                                 {renderGraphic()}
                             </div>
                         </section>
-                        {/* <section className="px-4 pb-4">
-                            <TableDashboard />
-                        </section> */}
                     </Fragment>
             }
             {renderLoading()}
